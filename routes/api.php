@@ -2,17 +2,23 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PassengerController;
+use App\Http\Controllers\Api\DriverController;
+use App\Http\Controllers\Api\TripController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-use App\Http\Controllers\Api\TripController;
 
-Route::post('/trips/request', [TripController::class, 'request']);
+Route::prefix('trips')->group(function () {
+    Route::post('request', [TripController::class, 'request']);
+});
 
-use App\Http\Controllers\Api\PassengerController;
-use App\Http\Controllers\Api\DriverController;
+Route::prefix('passengers')->group(function () {
+    Route::post('register', [PassengerController::class, 'register']);
+});
 
-Route::post('/passengers/register', [PassengerController::class, 'register']);
-Route::post('/drivers/register', [DriverController::class, 'register']);
+Route::prefix('drivers')->group(function () {
+    Route::post('register', [DriverController::class, 'register']);
+});

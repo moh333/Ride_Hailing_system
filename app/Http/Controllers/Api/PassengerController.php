@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Application\Passenger\DTOs\RegisterPassengerDTO;
 use App\Application\Passenger\UseCases\RegisterPassengerUseCase;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Passenger\RegisterPassengerRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class PassengerController extends Controller
 {
@@ -16,18 +15,8 @@ class PassengerController extends Controller
     ) {
     }
 
-    public function register(Request $request): JsonResponse
+    public function register(RegisterPassengerRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255', // Unique check done in UseCase or here? UseCase does it.
-            'password' => 'required|string|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         $dto = new RegisterPassengerDTO(
             $request->input('name'),
             $request->input('email'),

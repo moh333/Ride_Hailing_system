@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Application\Trip\DTOs\RequestTripDTO;
 use App\Application\Trip\UseCases\RequestTripUseCase;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Trip\RequestTripRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 
 class TripController extends Controller
 {
@@ -16,19 +16,9 @@ class TripController extends Controller
     ) {
     }
 
-    public function request(Request $request): JsonResponse
+    public function request(RequestTripRequest $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'passenger_id' => 'required|uuid',
-            'origin_lat' => 'required|numeric|min:-90|max:90',
-            'origin_lng' => 'required|numeric|min:-180|max:180',
-            'dest_lat' => 'required|numeric|min:-90|max:90',
-            'dest_lng' => 'required|numeric|min:-180|max:180',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        // Validation is automatically handled by RequestTripRequest
 
         $dto = new RequestTripDTO(
             $request->input('passenger_id'),
