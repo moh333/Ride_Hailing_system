@@ -10,3 +10,9 @@ Route::get('/user', function (Request $request) {
 use App\Http\Controllers\Api\TripController;
 
 Route::post('/trips/request', [TripController::class, 'request']);
+
+use App\Http\Controllers\Api\PassengerController;
+use App\Http\Controllers\Api\DriverController;
+
+Route::post('/passengers/register', [PassengerController::class, 'register']);
+Route::post('/drivers/register', [DriverController::class, 'register']);
